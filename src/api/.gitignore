@@ -455,3 +455,6 @@ $RECYCLE.BIN/
 
 # Development settings
 *.Development.json
+
+#Migrations
+Migrations/

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using ElBastard0.Api.Models;
+using ElBastard0.Api.Services;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,36 +12,45 @@ namespace ElBastard0.Api.Controllers
     [ApiController]
     public class DefaultController : ControllerBase
     {
-        // GET: api/<DefaultController>
+        private readonly IEntityService _entities;
+        public DefaultController(IEntityService entities)
+        {
+            _entities = entities;
+        }
+
+        // GET: api/default
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Entity> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _entities.GetAsync();
         }
 
-        // GET api/<DefaultController>/5
+        // GET api/default/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Task<Entity> Get(int id)
         {
-            return id.ToString();
+            return _entities.GetAsync(id);
         }
 
-        // POST api/<DefaultController>
+        // POST api/default
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Task<Entity> Post([FromBody] Entity entity)
         {
+            return _entities.AddAsync(entity);
         }
 
-        // PUT api/<DefaultController>/5
+        // PUT api/default/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public Task<Entity> Put(int id, [FromBody] Entity entity)
         {
+            return _entities.UpdateAsync(entity, id);
         }
 
-        // DELETE api/<DefaultController>/5
+        // DELETE api/default/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public Task Delete(int id)
         {
+            return _entities.DeleteAsync(id);
         }
     }
 }

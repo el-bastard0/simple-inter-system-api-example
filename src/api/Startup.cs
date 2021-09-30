@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ElBastard0.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,10 @@ namespace ElBastard0.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ElBastard0.Api", Version = "v1" });
             });
+
+            services.AddSqlServices(Configuration);
+            services.AddDataServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
