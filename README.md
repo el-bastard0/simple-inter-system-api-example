@@ -3,6 +3,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 [![issue-tracker](https://github.com/el-bastard0/simple-inter-system-api-example/actions/workflows/issue-tracker.yml/badge.svg)](https://github.com/el-bastard0/simple-inter-system-api-example/actions/workflows/issue-tracker.yml)
+[![dotnet-semantic-release](https://github.com/el-bastard0/simple-inter-system-api-example/actions/workflows/dotnet-semantic-release.yml/badge.svg)](https://github.com/el-bastard0/simple-inter-system-api-example/actions/workflows/dotnet-semantic-release.yml)
 
 ## Content <!-- omit in toc -->
 
