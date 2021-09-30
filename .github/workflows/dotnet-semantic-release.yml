@@ -1,0 +1,21 @@
+name: dotnet-semantic-release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    concurrency: release
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: bump version
+        uses: saintedlama/versionize@master
+        with:
+          workingDir: ./src/api
