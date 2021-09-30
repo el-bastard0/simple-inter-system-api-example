@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ElBastard0.Api.Services
 {
-    internal class EntityService : IEntityService
+    internal class EntityService<TEntity> : IEntityService<TEntity>
+        where TEntity : class, IEntity, new()
     {
         private readonly MyDbContext _dbContext;
 
@@ -16,9 +17,9 @@ namespace ElBastard0.Api.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Entity> AddAsync(Entity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            var result = await _dbContext.Entities.AddAsync(entity);
+            var result = await _dbContext.Set<TEntity>().AddAsync(entity);
 
             await _dbContext.SaveChangesAsync()
                 .ConfigureAwait(false);
@@ -28,25 +29,25 @@ namespace ElBastard0.Api.Services
 
         public async Task DeleteAsync(int id)
         {
-            var tmp = new Entity { Id = id };
-            _dbContext.Entities.Attach(tmp);
-            _dbContext.Entities.Remove(tmp);
+            var tmp = new TEntity { Id = id };
+            _dbContext.Set<TEntity>().Attach(tmp);
+            _dbContext.Set<TEntity>().Remove(tmp);
 
             await _dbContext.SaveChangesAsync()
                 .ConfigureAwait(false);
         }
 
-        public IQueryable<Entity> GetAsync() => _dbContext.Entities;
+        public IQueryable<TEntity> GetAsync() => _dbContext.Set<TEntity>();
 
-        public Task<Entity> GetAsync(int id)
+        public Task<TEntity> GetAsync(int id)
         {
-            return _dbContext.Entities
+            return _dbContext.Set<TEntity>()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<Entity> UpdateAsync(Entity entity, int id)
+        public async Task<TEntity> UpdateAsync(TEntity entity, int id)
         {
-            var attachedEntity = _dbContext.Entities.Attach(entity);
+            var attachedEntity = _dbContext.Set<TEntity>().Attach(entity);
             attachedEntity.State = EntityState.Modified;
 
             await _dbContext.SaveChangesAsync()
@@ -54,5 +55,6 @@ namespace ElBastard0.Api.Services
 
             return attachedEntity.Entity;
         }
+
     }
 }

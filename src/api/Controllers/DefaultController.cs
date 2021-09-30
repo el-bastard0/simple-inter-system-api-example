@@ -12,8 +12,8 @@ namespace ElBastard0.Api.Controllers
     [ApiController]
     public class DefaultController : ControllerBase
     {
-        private readonly IEntityService _entities;
-        public DefaultController(IEntityService entities)
+        private readonly IEntityService<Entity> _entities;
+        public DefaultController(IEntityService<Entity> entities)
         {
             _entities = entities;
         }

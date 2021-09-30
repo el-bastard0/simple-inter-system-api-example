@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace ElBastard0.Api.Services
 {
-    public interface IEntityService
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IEntityService<TEntity>
+        where TEntity: class
     {
-        IQueryable<Entity> GetAsync();
-        Task<Entity> GetAsync(int id);
+        IQueryable<TEntity> GetAsync();
+        Task<TEntity> GetAsync(int id);
 
-        Task<Entity> AddAsync(Entity entity);
-        Task<Entity> UpdateAsync(Entity entity, int id);
+        Task<TEntity> AddAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity, int id);
 
         Task DeleteAsync(int id);
     }
