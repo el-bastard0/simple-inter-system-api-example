@@ -3,6 +3,7 @@ import requests
 
 from typing import Dict, ByteString, List, IO, Tuple, Union
 from pydantic import AnyHttpUrl
+from urllib.parse import urljoin
 
 
 class BaseHttpClient:
@@ -83,8 +84,8 @@ class BaseHttpClient:
                        if k not in kwargs.keys()})
 
         if self.session:
-            return self.session.get(url=url, params=params, **kwargs)
-        return requests.get(url=url, params=params, **kwargs)
+            return self.session.get(url=urljoin(self.base_url, url), params=params, **kwargs)
+        return requests.get(url=urljoin(self.base_url, url), params=params, **kwargs)
 
     def post(self,
              url: str,
@@ -110,8 +111,8 @@ class BaseHttpClient:
                        if k not in kwargs.keys()})
 
         if self.session:
-            return self.session.post(url=url, data=data, json=json, **kwargs)
-        return requests.post(url=url, data=data, json=json, **kwargs)
+            return self.session.post(url=urljoin(self.base_url, url), data=data, json=json, **kwargs)
+        return requests.post(url=urljoin(self.base_url, url), data=data, json=json, **kwargs)
 
     def put(self,
             url: str,
@@ -138,8 +139,8 @@ class BaseHttpClient:
                        if k not in kwargs.keys()})
 
         if self.session:
-            return self.session.put(url=url, data=data, json=json, **kwargs)
-        return requests.put(url=url, data=data, json=json, **kwargs)
+            return self.session.put(url=urljoin(self.base_url, url), data=data, json=json, **kwargs)
+        return requests.put(url=urljoin(self.base_url, url), data=data, json=json, **kwargs)
 
     def patch(self,
               url: str,
@@ -166,8 +167,8 @@ class BaseHttpClient:
                        if k not in kwargs.keys()})
 
         if self.session:
-            return self.session.patch(url=url, data=data, json=json, **kwargs)
-        return requests.patch(url=url, data=data, json=json, **kwargs)
+            return self.session.patch(url=urljoin(self.base_url, url), data=data, json=json, **kwargs)
+        return requests.patch(url=urljoin(self.base_url, url), data=data, json=json, **kwargs)
 
     def delete(self, url: str, **kwargs) -> requests.Response:
         """
@@ -185,8 +186,8 @@ class BaseHttpClient:
                        if k not in kwargs.keys()})
 
         if self.session:
-            return self.session.delete(url=url, **kwargs)
-        return requests.delete(url=url, **kwargs)
+            return self.session.delete(url=urljoin(self.base_url, url), **kwargs)
+        return requests.delete(url=urljoin(self.base_url, url), **kwargs)
 
     def log_error(self,
                   err: requests.RequestException,
@@ -212,7 +213,7 @@ class BaseHttpClient:
             elif err.response.text and not msg:
                 self.logger.error("%s", err.response.text)
         elif not err.response and msg:
-                self.logger.error("%s \n Reason: %s", msg, err)
+            self.logger.error("%s \n Reason: %s", msg, err)
         else:
             self.logger.error(err)
 
